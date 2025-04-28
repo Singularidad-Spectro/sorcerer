@@ -17,8 +17,8 @@ x-n8n: &service-n8n
     - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
     - N8N_DIAGNOSTICS_ENABLED=false
     - N8N_PERSONALIZATION_ENABLED=false
-    - N8N_ENCRYPTION_KEY
-    - N8N_USER_MANAGEMENT_JWT_SECRET
+    - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+    - N8N_USER_MANAGEMENT_JWT_SECRET=${N8N_USER_MANAGEMENT_JWT_SECRET}
     - OLLAMA_HOST=ollama:11434
   env_file:
     - .env
@@ -43,8 +43,9 @@ x-init-ollama: &init-ollama
   environment:
     - OLLAMA_HOST=ollama:11434
   command:
-    - "-c"   
-    - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull llama3.2; OLLAMA_HOST=ollama:11434 ollama pull nomic-embed-text"
+    - "-c"
+  # - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull llama3.2; OLLAMA_HOST=ollama:11434 ollama pull nomic-embed-text"
+    - "sleep 3; ollama pull llama3.2 ollama pull nomic-embed-text"
 
 services:
   postgres:
@@ -95,6 +96,17 @@ services:
       n8n-import:
         condition: service_completed_successfully
 
+
+  kokoro-tts:
+    image: sebastianboehler/kokoro-tts
+    container_name: kokoro-tts
+    ports:
+      - "5000:5000"
+    environment:
+      - KOKORO_TTS_DEVICE=cpu
+    networks: ['demo']
+    restart: always
+
   qdrant:
     image: qdrant/qdrant
     hostname: qdrant
@@ -142,8 +154,8 @@ services:
       - ollama-gpu
 
   ollama-pull-llama-gpu-amd:
-    profiles: [gpu-amd]
+    profiles: ["gpu-amd"]
     <<: *init-ollama
     image: ollama/ollama:rocm
     depends_on:
-     - ollama-gpu-amd
+      - ollama-gpu-amd
