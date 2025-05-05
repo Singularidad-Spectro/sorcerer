@@ -111,7 +111,8 @@ services:
 
   kokoro-tts:
     build:
-      context: ./kokoro-custom
+      context: .
+      dockerfile: kokoro-custom/Dockerfile
     container_name: kokoro-tts
     ports:
       - "5000:5000"

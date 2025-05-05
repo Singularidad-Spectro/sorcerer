@@ -1,9 +1,9 @@
-#!/bin/bash
-# Inicia el backend de Kokoro TTS
+set -e
+
+echo "Iniciando backend FastAPI..."
+# Inicia el servidor en segundo plano
 uvicorn server:app --host 0.0.0.0 --port 5000 &
 
-# Esperar unos segundos para asegurar que el servidor esté arriba antes de lanzar Gradio
-sleep 10
-
+echo "Iniciando puente Gradio..."
 # Inicia la interfaz Gradio
 python gradio_bridge.py

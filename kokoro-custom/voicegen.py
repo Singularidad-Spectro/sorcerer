@@ -1,8 +1,6 @@
 import sys
 import shutil
 import os
-import time
-import httpx
 from gradio_client import Client
 
 # Configurar encoding si es necesario
@@ -18,19 +16,8 @@ print(f"Received text: {text}")
 print(f"Voice: {voice}")
 print(f"Speed: {speed}")
 
-# Intentar conexión con reintentos
-def try_connect(url, retries=10, delay=3):
-    for i in range(retries):
-        try:
-            print(f"Intentando conectar a {url} (intento {i+1}/{retries})...")
-            return Client(url)
-        except httpx.ConnectError as e:
-            print(f"Error de conexión: {e}. Reintentando en {delay}s...")
-            time.sleep(delay)
-    raise RuntimeError(f"No se pudo conectar a {url} después de {retries} intentos.")
-
 # Conectarse al servidor Gradio que expone la interfaz /tts
-client = try_connect("http://kokoro-tts:7860/")
+client = Client("http://kokoro-tts:7860/")
 
 # Llamar a la función predict
 result = client.predict(

@@ -1,25 +1,38 @@
-# Build stage
-FROM python:3.10-slim AS builder
+# ---------- Build Stage ----------
+    FROM python:3.12-slim as builder
 
-WORKDIR /app
-
-# Instalar dependencias necesarias
-COPY requirements.txt .
-RUN pip install --no-cache-dir --target=/app/deps -r requirements.txt
-
-# Copiar scripts
-COPY gradio_bridge.py .
-COPY start.sh .
-RUN chmod +x start.sh
-
-# Package stage (runtime)
-FROM python:3.10-slim
-
-WORKDIR /app
-
-# Copiar solo lo necesario del builder
-COPY --from=builder /app/deps /usr/local/lib/python3.10/site-packages
-COPY --from=builder /app/gradio_bridge.py .
-COPY --from=builder /app/start.sh .
-
-CMD ["/app/start.sh"]
+    WORKDIR /build
+    
+    # Crear entorno virtual
+    RUN python -m venv /opt/venv
+    
+    # Copiar archivo de requerimientos desde kokoro-custom
+    COPY kokoro-custom/requirements.txt .
+    
+    # Instalar dependencias en el entorno virtual
+    RUN /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
+    
+    # ---------- Final Stage ----------
+    FROM python:3.12-slim
+    
+    # Configurar el entorno virtual
+    ENV PATH="/opt/venv/bin:$PATH"
+    
+    # Copiar entorno virtual ya preparado
+    COPY --from=builder /opt/venv /opt/venv
+    
+    # Crear directorio de trabajo
+    WORKDIR /app
+    
+    # Copiar scripts y configuraciones necesarias desde otras carpetas
+    COPY kokoro-custom/server.py /app/server.py
+    COPY kokoro-custom/voicegen.py /data/KOKORO/voicegen.py
+    COPY kokoro-entrypoint/start.sh /app/start.sh
+    COPY gradio/gradio_bridge.py /app/gradio_bridge.py
+    COPY KOKORO /data/KOKORO
+    
+    # Dar permisos de ejecución al entrypoint
+    RUN chmod +x /app/start.sh
+    
+    # Comando por defecto al iniciar el contenedor
+    CMD ["/app/start.sh"]
