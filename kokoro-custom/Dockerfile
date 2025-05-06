@@ -24,12 +24,16 @@
     # Crear directorio de trabajo
     WORKDIR /app
     
-    # Copiar scripts y configuraciones necesarias desde otras carpetas
+    # Copiar scripts y configuraciones necesarias
     COPY kokoro-custom/server.py /app/server.py
     COPY kokoro-custom/voicegen.py /data/KOKORO/voicegen.py
     COPY kokoro-entrypoint/start.sh /app/start.sh
     COPY gradio/gradio_bridge.py /app/gradio_bridge.py
     COPY KOKORO /data/KOKORO
+    
+    # Cambiar shebang de start.sh (si aún no lo hiciste, hazlo tú en tu editor):
+    # De: #!/bin/bash
+    # A:   #!/bin/sh
     
     # Dar permisos de ejecución al entrypoint
     RUN chmod +x /app/start.sh

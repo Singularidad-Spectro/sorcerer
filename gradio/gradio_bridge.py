@@ -45,5 +45,5 @@ iface = gr.Interface(
     description="Bridge for gradio_client compatibility",
 )
 
-# Asegura que gradio_client funcione con /tts
-iface.launch(server_name="0.0.0.0", server_port=7860, api_name="/tts")
+# Iniciar interfaz en la red local (puerto 7860)
+iface.launch(server_name="0.0.0.0", server_port=7860)
