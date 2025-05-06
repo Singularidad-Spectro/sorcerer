@@ -25,12 +25,12 @@ store with an comprehensive API
 ✅ [**PostgreSQL**](https://www.postgresql.org/) -  Workhorse of the Data
 Engineering world, handles large amounts of data safely.
 ### Running n8n using Docker Compose
-![Alt text](https://github.com/Hackathon-ChatGPT-NTTDATA/respuestas/blob/master/Hackathon-ChatGPT-NTTDATA-Arquitectura.drawio.png "Optional title")
+![Alt text]([https://github.com/Hackathon-ChatGPT-NTTDATA/respuestas/blob/master/Hackathon-ChatGPT-NTTDATA-Arquitectura.drawio.png](https://raw.githubusercontent.com/Singularidad-Spectro/sorcerer/refs/heads/main/imagenes/imagen1.jpeg "Docker lite version")
 
-[![Watch the video](https://avatars.githubusercontent.com/u/129013697?s=400&u=ef6d4d2c824cf0c5b5b85f6f44028c3ab9e9c057&v=4)](https://www.linkedin.com/posts/coder-path_agente-local-cpu-docker-compose-activity-7321037721651630080-O5I2?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAAp9TUYBbHEtMks9upn5PH1R6Kd6dfttBRk)
+[![Watch the video](https://raw.githubusercontent.com/Singularidad-Spectro/sorcerer/refs/heads/main/imagenes/imagen4.png)](https://www.linkedin.com/posts/coder-path_agente-local-cpu-docker-compose-activity-7321037721651630080-O5I2?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAAp9TUYBbHEtMks9upn5PH1R6Kd6dfttBRk)
 
-![Alt text](https://github.com/Hackathon-ChatGPT-NTTDATA/respuestas/blob/master/Hackathon-ChatGPT-NTTDATA-Arquitectura.drawio.png "Optional title")
-![Alt text](https://github.com/Hackathon-ChatGPT-NTTDATA/respuestas/blob/master/Hackathon-ChatGPT-NTTDATA-Arquitectura.drawio.png "Optional title")
+![Alt text](https://raw.githubusercontent.com/Singularidad-Spectro/sorcerer/refs/heads/main/imagenes/imagen2.jpeg "Build Stage")
+![Alt text](https://raw.githubusercontent.com/Singularidad-Spectro/sorcerer/refs/heads/main/imagenes/imagen3.JPG "Mongo Atlas DB vector configuration")
 #### For Nvidia GPU users
 
 ```
