@@ -45,5 +45,8 @@ iface = gr.Interface(
     description="Bridge for gradio_client compatibility",
 )
 
+# Registrar endpoint con api_name para gradio_client
+iface.api_name = "/tts"
+
 # Iniciar interfaz en la red local (puerto 7860)
 iface.launch(server_name="0.0.0.0", server_port=7860)

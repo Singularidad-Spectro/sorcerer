@@ -1,0 +1,135 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-1",
+      "name": "Chat Trigger",
+      "type": "n8n-nodes-base.chatTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "agentId": "ollama-agent",
+        "text": "={{$json.body}}"
+      },
+      "id": "ai-agent",
+      "name": "AI Agent",
+      "type": "n8n-nodes-base.aiAgent",
+      "typeVersion": 1,
+      "position": [
+        450,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "values": [
+          {
+            "name": "voice",
+            "value": "sarah"
+          },
+          {
+            "name": "text",
+            "value": "={{ $json.data }}"
+          }
+        ],
+        "options": {}
+      },
+      "id": "set-node",
+      "name": "Prepare Text for TTS",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        650,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=/opt/venv/bin/python /data/KOKORO/voicegen.py \"{{ $json.text }}\" \"{{ $json.voice }}\" 1"
+      },
+      "id": "exec-voicegen",
+      "name": "Run voicegen.py",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        850,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "path": "/data/audio/output.mp3",
+        "options": {}
+      },
+      "id": "read-audio",
+      "name": "Read Audio File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        1050,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "send-response",
+      "name": "Send Audio Reply",
+      "type": "n8n-nodes-base.respondToChat",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          "ai-agent"
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          "set-node"
+        ]
+      ]
+    },
+    "Prepare Text for TTS": {
+      "main": [
+        [
+          "exec-voicegen"
+        ]
+      ]
+    },
+    "Run voicegen.py": {
+      "main": [
+        [
+          "read-audio"
+        ]
+      ]
+    },
+    "Read Audio File": {
+      "main": [
+        [
+          "send-response"
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "instanceId": "kokoro-flow-tts-audio"
+  },
+  "settings": {},
+  "name": "Kokoro Voice Answer",
+  "active": false
+}
